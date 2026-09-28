@@ -1,191 +1,895 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Yara Yasser, Flutter Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f5f3ff;--fg:#14123a;--mut:#585584;--card:rgba(255,255,255,.7);--line:rgba(20,18,58,.14);--v:#7c5cff;--c:#ff5c7a;--s:#12b5d6;--d:'Bricolage Grotesque',Georgia,serif;
-background:var(--bg);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0b1e;--fg:#f1f0ff;--mut:#a9a8d4;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.14);--s:#3de0d0}}
-:root[data-theme="dark"]{--bg:#0a0b1e;--fg:#f1f0ff;--mut:#a9a8d4;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.14);--s:#3de0d0}
-*{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
-body{background:var(--bg);color:var(--fg);font:400 1.05rem/1.65 'Instrument Sans',system-ui,sans-serif;overflow-x:hidden}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--c);outline-offset:3px;border-radius:6px}
-h1,h2,h3{font-family:var(--d);letter-spacing:-.03em}
-.w{width:min(1120px,calc(100% - 40px));margin:auto}
-main{position:relative;z-index:1}
-.glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(520px circle at var(--mx,50%) var(--my,30%),color-mix(in oklab,var(--v) 24%,transparent),transparent 60%)}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in oklab,var(--bg) 70%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.nav{height:60px;display:flex;align-items:center;justify-content:space-between}
-.logo{font:800 1.2rem var(--d);text-decoration:none}
-.mode{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;width:38px;height:38px;cursor:pointer;font-size:1.05rem}
-.nav nav{display:flex;gap:24px;font-size:.92rem}.nav nav a{text-decoration:none;color:var(--mut)}.nav nav a:hover{color:var(--fg)}
-/* hero */
-.hero{position:relative;min-height:calc(100svh - 60px);display:flex;align-items:center;overflow:hidden;padding:60px 0}
-.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none;animation:drift 16s ease-in-out infinite alternate}
-.o1{width:46vmax;height:46vmax;background:var(--v);left:-10vmax;top:-12vmax}
-.o2{width:36vmax;height:36vmax;background:var(--c);right:-8vmax;top:10vmax;animation-duration:21s;animation-delay:-6s}
-.o3{width:30vmax;height:30vmax;background:var(--s);left:30%;bottom:-16vmax;animation-duration:25s;animation-delay:-11s}
-@keyframes drift{to{transform:translate(9vmax,-7vmax) scale(1.25)}}
-.hero .w{position:relative}
-.live{display:inline-flex;align-items:center;gap:10px;padding:7px 15px;border:1px solid var(--line);border-radius:999px;background:var(--card);backdrop-filter:blur(8px);font-size:.9rem}
-.live i{width:9px;height:9px;border-radius:50%;background:var(--s);animation:pulse 1.8s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 var(--s)}100%{box-shadow:0 0 0 12px transparent}}
-h1{font-size:clamp(4rem,17vw,14.5rem);line-height:.86;margin:26px 0 30px;font-weight:600}
-h1 .ln{display:block;white-space:nowrap}
-.l{display:inline-block;animation:up .9s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(var(--i)*.06s)}
-@keyframes up{from{opacity:0;transform:translateY(55%) rotate(9deg)}}
-.tag{font:600 clamp(1.2rem,2.8vw,2rem)/1.25 var(--d);max-width:20em}
-.sub{max-width:34rem;margin-top:14px;color:var(--mut)}
-.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-.btn{display:inline-block;padding:14px 26px;border-radius:999px;text-decoration:none;font-weight:600;border:1px solid var(--line);background:var(--card);backdrop-filter:blur(8px);transition:transform .2s}
-.btn.p{background:linear-gradient(120deg,var(--v),var(--c));color:#fff;border:0}
-/* marquee */
-.mq{overflow:hidden;border-block:1px solid var(--line);padding:18px 0;background:var(--card)}
-.mq div{display:flex;width:max-content;animation:mq 32s linear infinite}
-.mq:hover div{animation-play-state:paused}
-.mq span{font:700 clamp(1.5rem,4vw,2.6rem) var(--d);padding:0 28px;display:flex;align-items:center;gap:56px;white-space:nowrap}
-.mq span::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--c)}
-@keyframes mq{to{transform:translateX(-50%)}}
-section{padding:100px 0}
-h2{font-size:clamp(2rem,5vw,3.6rem);font-weight:700;line-height:1.02}
-.stmt{font:600 clamp(1.8rem,4.6vw,3.6rem)/1.15 var(--d);max-width:18em}
-.stmt .wd{opacity:.18;transition:opacity .3s}.stmt .wd.on{opacity:1}
-.about{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px}
-.about p{color:var(--mut)}.about strong{color:var(--fg);font-weight:600}
-.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:64px}
-.sk{padding:22px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
-.sk h3{font-size:1.1rem;margin-bottom:8px;color:var(--s)}
-.sk ul{list-style:none;padding:0;color:var(--mut);font-size:.95rem;line-height:1.9}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;perspective:1000px}
-.card{position:relative;padding:26px;border:1px solid var(--line);border-radius:24px;background:var(--card);backdrop-filter:blur(8px);display:flex;flex-direction:column;gap:10px;overflow:hidden;transition:transform .2s ease-out,border-color .3s;transform-style:preserve-3d}
-.card::before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--px,50%) var(--py,0%),color-mix(in oklab,var(--c) 30%,transparent),transparent 65%);opacity:0;transition:opacity .3s;pointer-events:none}
-.card:hover{border-color:var(--v)}.card:hover::before{opacity:1}
-.card.big{grid-column:span 2}
-.st{font-size:.82rem;color:var(--mut);display:flex;align-items:center;gap:8px}
-.st::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--s)}.st.wip::before{background:var(--c)}
-.card h3{font-size:1.5rem;line-height:1.1}.card.big h3{font-size:2.1rem}
-.card h3 a{text-decoration:none}.card h3 a::after{content:"";position:absolute;inset:0}
-.card p{color:var(--mut);font-size:.95rem}
-.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:8px}
-.chips b{font-weight:500;font-size:.8rem;padding:3px 10px;border-radius:8px;background:color-mix(in oklab,var(--v) 18%,transparent)}
-.tl{position:relative;margin-top:44px;padding-left:34px}
-.tl::before,.tl::after{content:"";position:absolute;left:6px;top:0;bottom:0;width:3px;border-radius:3px}
-.tl::before{background:var(--line)}
-.tl::after{background:linear-gradient(var(--v),var(--c));transform-origin:top;transform:scaleY(var(--p,0))}
-.it{position:relative;padding-bottom:34px}
-.it::before{content:"";position:absolute;left:-36px;top:7px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--v)}
-.it time{font-size:.85rem;color:var(--c);font-weight:600}
-.it h3{font-size:1.3rem;margin:2px 0 3px}.it p{color:var(--mut);font-size:.95rem}
-.contact{background:linear-gradient(120deg,var(--v),var(--c),var(--s),var(--v));background-size:300% 100%;animation:sh 14s linear infinite;color:#fff}
-@keyframes sh{to{background-position:300% 0}}
-.contact h2{max-width:11em}.contact p{margin-top:14px;max-width:32rem;opacity:.92}
-.mail{display:block;margin-top:34px;font:800 clamp(1.05rem,4.4vw,3rem)/1.2 var(--d);text-underline-offset:8px;word-break:break-all}
-.links{display:flex;flex-wrap:wrap;gap:24px;margin-top:26px;font-weight:600}
-footer{text-align:center;padding:24px 0;color:var(--mut);font-size:.85rem;position:relative;z-index:1}
-[data-rv]{opacity:0;translate:0 34px;transition:opacity .8s,translate .8s;transition-delay:calc(var(--i,0)*.07s)}
-[data-rv].in{opacity:1;translate:0 0}
-@media (max-width:860px){
-.nav nav a:not(:last-child){display:none}
-.about{grid-template-columns:1fr}.skills{grid-template-columns:1fr 1fr}
-.grid{grid-template-columns:1fr}.card.big{grid-column:auto}section{padding:70px 0}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}[data-rv]{opacity:1;translate:none}.stmt .wd{opacity:1}html{scroll-behavior:auto}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Yara Yasser, Flutter Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Instrument+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f3ff;
+            --fg: #14123a;
+            --mut: #585584;
+            --card: rgba(255, 255, 255, .7);
+            --line: rgba(20, 18, 58, .14);
+            --v: #7c5cff;
+            --c: #ff5c7a;
+            --s: #12b5d6;
+            --d: 'Bricolage Grotesque', Georgia, serif;
+            background: var(--bg);
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0a0b1e;
+                --fg: #f1f0ff;
+                --mut: #a9a8d4;
+                --card: rgba(255, 255, 255, .06);
+                --line: rgba(255, 255, 255, .14);
+                --s: #3de0d0
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0a0b1e;
+            --fg: #f1f0ff;
+            --mut: #a9a8d4;
+            --card: rgba(255, 255, 255, .06);
+            --line: rgba(255, 255, 255, .14);
+            --s: #3de0d0
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 70px)
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font: 400 1.05rem/1.65 'Instrument Sans', system-ui, sans-serif;
+            overflow-x: hidden
+        }
+
+        a {
+            color: inherit
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--c);
+            outline-offset: 3px;
+            border-radius: 6px
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--d);
+            letter-spacing: -.03em
+        }
+
+        .w {
+            width: min(1120px, calc(100% - 40px));
+            margin: auto
+        }
+
+        main {
+            position: relative;
+            z-index: 1
+        }
+
+        .glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 30%), color-mix(in oklab, var(--v) 24%, transparent), transparent 60%)
+        }
+
+        header {
+            position: sticky;
+            top: env(safe-area-inset-top, 0px);
+            z-index: 9;
+            background: color-mix(in oklab, var(--bg) 70%, transparent);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--line)
+        }
+
+        .nav {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .logo {
+            font: 800 1.2rem var(--d);
+            text-decoration: none
+        }
+
+        .mode {
+            border: 1px solid var(--line);
+            background: var(--card);
+            color: var(--fg);
+            border-radius: 999px;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            font-size: 1.05rem
+        }
+
+        .nav nav {
+            display: flex;
+            gap: 24px;
+            font-size: .92rem
+        }
+
+        .nav nav a {
+            text-decoration: none;
+            color: var(--mut)
+        }
+
+        .nav nav a:hover {
+            color: var(--fg)
+        }
+
+        /* hero */
+        .hero {
+            position: relative;
+            min-height: calc(100svh - 60px);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding: 60px 0
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: .55;
+            pointer-events: none;
+            animation: drift 16s ease-in-out infinite alternate
+        }
+
+        .o1 {
+            width: 46vmax;
+            height: 46vmax;
+            background: var(--v);
+            left: -10vmax;
+            top: -12vmax
+        }
+
+        .o2 {
+            width: 36vmax;
+            height: 36vmax;
+            background: var(--c);
+            right: -8vmax;
+            top: 10vmax;
+            animation-duration: 21s;
+            animation-delay: -6s
+        }
+
+        .o3 {
+            width: 30vmax;
+            height: 30vmax;
+            background: var(--s);
+            left: 30%;
+            bottom: -16vmax;
+            animation-duration: 25s;
+            animation-delay: -11s
+        }
+
+        @keyframes drift {
+            to {
+                transform: translate(9vmax, -7vmax) scale(1.25)
+            }
+        }
+
+        .hero .w {
+            position: relative
+        }
+
+        .live {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 15px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--card);
+            backdrop-filter: blur(8px);
+            font-size: .9rem
+        }
+
+        .live i {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--s);
+            animation: pulse 1.8s infinite
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 var(--s)
+            }
+
+            100% {
+                box-shadow: 0 0 0 12px transparent
+            }
+        }
+
+        h1 {
+            font-size: clamp(4rem, 17vw, 14.5rem);
+            line-height: .86;
+            margin: 26px 0 30px;
+            font-weight: 600
+        }
+
+        h1 .ln {
+            display: block;
+            white-space: nowrap
+        }
+
+        .l {
+            display: inline-block;
+            animation: up .9s cubic-bezier(.2, .9, .2, 1) both;
+            animation-delay: calc(var(--i)*.06s)
+        }
+
+        @keyframes up {
+            from {
+                opacity: 0;
+                transform: translateY(55%) rotate(9deg)
+            }
+        }
+
+        .tag {
+            font: 600 clamp(1.2rem, 2.8vw, 2rem)/1.25 var(--d);
+            max-width: 20em
+        }
+
+        .sub {
+            max-width: 34rem;
+            margin-top: 14px;
+            color: var(--mut)
+        }
+
+        .cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 26px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid var(--line);
+            background: var(--card);
+            backdrop-filter: blur(8px);
+            transition: transform .2s
+        }
+
+        .btn.p {
+            background: linear-gradient(120deg, var(--v), var(--c));
+            color: #fff;
+            border: 0
+        }
+
+        /* marquee */
+        .mq {
+            overflow: hidden;
+            border-block: 1px solid var(--line);
+            padding: 18px 0;
+            background: var(--card)
+        }
+
+        .mq div {
+            display: flex;
+            width: max-content;
+            animation: mq 32s linear infinite
+        }
+
+        .mq:hover div {
+            animation-play-state: paused
+        }
+
+        .mq span {
+            font: 700 clamp(1.5rem, 4vw, 2.6rem) var(--d);
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            gap: 56px;
+            white-space: nowrap
+        }
+
+        .mq span::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--c)
+        }
+
+        @keyframes mq {
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        section {
+            padding: 100px 0
+        }
+
+        h2 {
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            font-weight: 700;
+            line-height: 1.02
+        }
+
+        .stmt {
+            font: 600 clamp(1.8rem, 4.6vw, 3.6rem)/1.15 var(--d);
+            max-width: 18em
+        }
+
+        .stmt .wd {
+            opacity: .18;
+            transition: opacity .3s
+        }
+
+        .stmt .wd.on {
+            opacity: 1
+        }
+
+        .about {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 48px
+        }
+
+        .about p {
+            color: var(--mut)
+        }
+
+        .about strong {
+            color: var(--fg);
+            font-weight: 600
+        }
+
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 64px
+        }
+
+        .sk {
+            padding: 22px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: var(--card)
+        }
+
+        .sk h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--s)
+        }
+
+        .sk ul {
+            list-style: none;
+            padding: 0;
+            color: var(--mut);
+            font-size: .95rem;
+            line-height: 1.9
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 44px;
+            perspective: 1000px
+        }
+
+        .card {
+            position: relative;
+            padding: 26px;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: var(--card);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden;
+            transition: transform .2s ease-out, border-color .3s;
+            transform-style: preserve-3d
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(260px circle at var(--px, 50%) var(--py, 0%), color-mix(in oklab, var(--c) 30%, transparent), transparent 65%);
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none
+        }
+
+        .card:hover {
+            border-color: var(--v)
+        }
+
+        .card:hover::before {
+            opacity: 1
+        }
+
+        .card.big {
+            grid-column: span 2
+        }
+
+        .st {
+            font-size: .82rem;
+            color: var(--mut);
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .st::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--s)
+        }
+
+        .st.wip::before {
+            background: var(--c)
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            line-height: 1.1
+        }
+
+        .card.big h3 {
+            font-size: 2.1rem
+        }
+
+        .card h3 a {
+            text-decoration: none
+        }
+
+        .card h3 a::after {
+            content: "";
+            position: absolute;
+            inset: 0
+        }
+
+        .card p {
+            color: var(--mut);
+            font-size: .95rem
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: auto;
+            padding-top: 8px
+        }
+
+        .chips b {
+            font-weight: 500;
+            font-size: .8rem;
+            padding: 3px 10px;
+            border-radius: 8px;
+            background: color-mix(in oklab, var(--v) 18%, transparent)
+        }
+
+        .tl {
+            position: relative;
+            margin-top: 44px;
+            padding-left: 34px
+        }
+
+        .tl::before,
+        .tl::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            border-radius: 3px
+        }
+
+        .tl::before {
+            background: var(--line)
+        }
+
+        .tl::after {
+            background: linear-gradient(var(--v), var(--c));
+            transform-origin: top;
+            transform: scaleY(var(--p, 0))
+        }
+
+        .it {
+            position: relative;
+            padding-bottom: 34px
+        }
+
+        .it::before {
+            content: "";
+            position: absolute;
+            left: -36px;
+            top: 7px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 3px solid var(--v)
+        }
+
+        .it time {
+            font-size: .85rem;
+            color: var(--c);
+            font-weight: 600
+        }
+
+        .it h3 {
+            font-size: 1.3rem;
+            margin: 2px 0 3px
+        }
+
+        .it p {
+            color: var(--mut);
+            font-size: .95rem
+        }
+
+        .contact {
+            background: linear-gradient(120deg, var(--v), var(--c), var(--s), var(--v));
+            background-size: 300% 100%;
+            animation: sh 14s linear infinite;
+            color: #fff
+        }
+
+        @keyframes sh {
+            to {
+                background-position: 300% 0
+            }
+        }
+
+        .contact h2 {
+            max-width: 11em
+        }
+
+        .contact p {
+            margin-top: 14px;
+            max-width: 32rem;
+            opacity: .92
+        }
+
+        .mail {
+            display: block;
+            margin-top: 34px;
+            font: 800 clamp(1.05rem, 4.4vw, 3rem)/1.2 var(--d);
+            text-underline-offset: 8px;
+            word-break: break-all
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 26px;
+            font-weight: 600
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px 0;
+            color: var(--mut);
+            font-size: .85rem;
+            position: relative;
+            z-index: 1
+        }
+
+        [data-rv] {
+            opacity: 0;
+            translate: 0 34px;
+            transition: opacity .8s, translate .8s;
+            transition-delay: calc(var(--i, 0)*.07s)
+        }
+
+        [data-rv].in {
+            opacity: 1;
+            translate: 0 0
+        }
+
+        @media (max-width:860px) {
+            .nav nav a:not(:last-child) {
+                display: none
+            }
+
+            .about {
+                grid-template-columns: 1fr
+            }
+
+            .skills {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .card.big {
+                grid-column: auto
+            }
+
+            section {
+                padding: 70px 0
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                animation: none !important;
+                transition: none !important
+            }
+
+            [data-rv] {
+                opacity: 1;
+                translate: none
+            }
+
+            .stmt .wd {
+                opacity: 1
+            }
+
+            html {
+                scroll-behavior: auto
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div class="glow" aria-hidden="true"></div>
-<header><div class="w nav"><a class="logo" href="#top">yara.dev</a>
-<nav><a href="#about">About</a><a href="#projects">Projects</a><a href="#journey">Journey</a><a href="#contact">Contact</a></nav><button class="mode" id="mode" aria-label="Switch between dark and light mode">◐</button></div></header>
+    <div class="glow" aria-hidden="true"></div>
+    <header>
+        <div class="w nav"><a class="logo" href="#top">yara.dev</a>
+            <nav><a href="#about">About</a><a href="#projects">Projects</a><a href="#journey">Journey</a><a
+                    href="#contact">Contact</a></nav><button class="mode" id="mode"
+                aria-label="Switch between dark and light mode">◐</button>
+        </div>
+    </header>
 
-<main id="top">
-<div class="hero"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i>
-<div class="w">
-<span class="live"><i></i>Open to junior Flutter roles</span>
-<h1 id="name" aria-label="Yara Yasser"><span class="ln" data-t="Yara"></span><span class="ln" data-t="Yasser"></span></h1>
-<p class="tag">I build mobile apps people enjoy using.</p>
-<p class="sub">A junior Flutter developer who combines mobile development, business knowledge and an eye for user experience to turn ideas into polished apps.</p>
-<div class="cta"><a class="btn p" data-mag href="#projects">View my work</a><a class="btn" data-mag href="#contact">Let's connect</a></div>
-</div></div>
+    <main id="top">
+        <div class="hero"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i>
+            <div class="w">
+                <span class="live"><i></i>Open to junior Flutter roles</span>
+                <h1 id="name" aria-label="Yara Yasser"><span class="ln" data-t="Yara"></span><span class="ln"
+                        data-t="Yasser"></span></h1>
+                <p class="tag">I build mobile apps people enjoy using.</p>
+                <p class="sub">A junior Flutter developer who combines mobile development, business knowledge and an eye
+                    for user experience to turn ideas into polished apps.</p>
+                <div class="cta"><a class="btn p" data-mag href="#projects">View my work</a><a class="btn" data-mag
+                        href="#contact">Let's connect</a></div>
+            </div>
+        </div>
 
-<div class="mq" aria-hidden="true"><div>
-<span>Flutter</span><span>Dart</span><span>React Native</span><span>TypeScript</span><span>Odoo</span><span>Python</span><span>Provider</span><span>Expo</span>
-<span>Flutter</span><span>Dart</span><span>React Native</span><span>TypeScript</span><span>Odoo</span><span>Python</span><span>Provider</span><span>Expo</span>
-</div></div>
+        <div class="mq" aria-hidden="true">
+            <div>
+                <span>Flutter</span><span>Dart</span><span>React
+                    Native</span><span>TypeScript</span><span>Odoo</span><span>Python</span><span>Provider</span><span>Expo</span>
+                <span>Flutter</span><span>Dart</span><span>React
+                    Native</span><span>TypeScript</span><span>Odoo</span><span>Python</span><span>Provider</span><span>Expo</span>
+            </div>
+        </div>
 
-<section id="about"><div class="w">
-<p class="stmt" id="stmt">I start with the problem, then the people, then the product.</p>
-<div class="about">
-<p data-rv>My question has always been: <strong>how does an idea become something people can actually use?</strong> Studying Business Information Systems showed me where technology meets real problems, and Flutter gave me the tools to solve them.</p>
-<p data-rv style="--i:1">As HR Head in Enactus I learned the other half of building things: <strong>working with people</strong>. Communication, organization and leading a team come with me into every project.</p>
-</div>
-<div class="skills">
-<div class="sk" data-rv><h3>Flutter and Dart</h3><ul><li>Widgets, Material Design</li><li>Navigation</li><li>Provider</li><li>Responsive layouts</li></ul></div>
-<div class="sk" data-rv style="--i:1"><h3>React Native</h3><ul><li>Expo, Expo Router</li><li>TypeScript</li><li>NativeWind</li><li>Zustand</li></ul></div>
-<div class="sk" data-rv style="--i:2"><h3>Odoo</h3><ul><li>Python</li><li>XML views</li><li>Custom modules</li><li>Business systems</li></ul></div>
-<div class="sk" data-rv style="--i:3"><h3>Tools</h3><ul><li>Git and GitHub</li><li>Android Studio</li><li>IntelliJ IDEA</li><li>VS Code</li></ul></div>
-</div></div></section>
+        <section id="about">
+            <div class="w">
+                <p class="stmt" id="stmt">I start with the problem, then the people, then the product.</p>
+                <div class="about">
+                    <p data-rv>My question has always been: <strong>how does an idea become something people can
+                            actually use?</strong> Studying Business Information Systems showed me where technology
+                        meets real problems, and Flutter gave me the tools to solve them.</p>
+                    <p data-rv style="--i:1">As HR Head in Enactus I learned the other half of building things:
+                        <strong>working with people</strong>. Communication, organization and leading a team come with
+                        me into every project.</p>
+                </div>
+                <div class="skills">
+                    <div class="sk" data-rv>
+                        <h3>Flutter and Dart</h3>
+                        <ul>
+                            <li>Widgets, Material Design</li>
+                            <li>Navigation</li>
+                            <li>Provider</li>
+                            <li>Responsive layouts</li>
+                        </ul>
+                    </div>
+                    <div class="sk" data-rv style="--i:1">
+                        <h3>React Native</h3>
+                        <ul>
+                            <li>Expo, Expo Router</li>
+                            <li>TypeScript</li>
+                            <li>NativeWind</li>
+                            <li>Zustand</li>
+                        </ul>
+                    </div>
+                    <div class="sk" data-rv style="--i:2">
+                        <h3>Odoo</h3>
+                        <ul>
+                            <li>Python</li>
+                            <li>XML views</li>
+                            <li>Custom modules</li>
+                            <li>Business systems</li>
+                        </ul>
+                    </div>
+                    <div class="sk" data-rv style="--i:3">
+                        <h3>Tools</h3>
+                        <ul>
+                            <li>Git and GitHub</li>
+                            <li>Android Studio</li>
+                            <li>IntelliJ IDEA</li>
+                            <li>VS Code</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<section id="projects" style="padding-top:0"><div class="w">
-<h2 data-rv>Things I've built.</h2>
-<div class="grid">
-<article class="card big" data-rv data-tilt><span class="st">Completed</span><h3><a href="https://github.com/Yarayasser-tech/Coffee" target="_blank" rel="noopener noreferrer">Coffee Shop app</a></h3><p>A cross-platform ordering app built around a simple, enjoyable shopping flow. Browse products, manage the cart, place and track orders, and edit your profile.</p><div class="chips"><b>Flutter</b><b>Dart</b><b>Provider</b><b>Google Nav Bar</b></div></article>
-<article class="card" data-rv data-tilt style="--i:1"><span class="st">Completed</span><h3><a href="https://github.com/Yarayasser-tech/Birdle" target="_blank" rel="noopener noreferrer">Birdle</a></h3><p>A Wordle-inspired game with reusable widgets, custom gameplay logic and tests.</p><div class="chips"><b>Flutter</b><b>Flutter Test</b></div></article>
-<article class="card" data-rv data-tilt><span class="st wip">In progress</span><h3><a href="https://github.com/Yarayasser-tech/Grocify" target="_blank" rel="noopener noreferrer">Grocify</a></h3><p>A grocery shopping app focused on product browsing, navigation and a clean shopping experience.</p><div class="chips"><b>React Native</b><b>Expo</b><b>TypeScript</b></div></article>
-<article class="card" data-rv data-tilt style="--i:1"><span class="st">Completed</span><h3><a href="https://github.com/Yarayasser-tech/basketball_score_counter" target="_blank" rel="noopener noreferrer">Basketball Score Counter</a></h3><p>Track two teams and add one, two or three points from an interactive UI.</p><div class="chips"><b>Flutter</b><b>StatefulWidget</b></div></article>
-<article class="card" data-rv data-tilt style="--i:2"><span class="st">Completed</span><h3><a href="https://github.com/Yarayasser-tech/Facebook" target="_blank" rel="noopener noreferrer">Facebook UI clone</a></h3><p>Practice in responsive layouts, scrolling, navigation and reusable widgets.</p><div class="chips"><b>Flutter</b><b>Responsive UI</b></div></article>
-<article class="card" data-rv data-tilt><span class="st wip">Concept</span><h3><a href="https://github.com/Yarayasser-tech/Tradentia" target="_blank" rel="noopener noreferrer">Tradentia</a></h3><p>A community app idea for trading items peer to peer, exploring how to make exchanges easier.</p><div class="chips"><b>Flutter</b><b>UI/UX</b></div></article>
-<article class="card" data-rv data-tilt style="--i:1"><span class="st">Completed</span><h3><a href="https://github.com/Yarayasser-tech/new_sales" target="_blank" rel="noopener noreferrer">New Sales</a></h3><p>An Odoo sales module with a read-only Sales Price column and a bulk price wizard.</p><div class="chips"><b>Odoo</b><b>Python</b><b>XML</b></div></article>
-<article class="card" data-rv data-tilt style="--i:2"><span class="st wip">In progress</span><h3><a href="https://github.com/Yarayasser-tech/library_management" target="_blank" rel="noopener noreferrer">Library Management System</a></h3><p>Books, members, borrowing, returns, reservations, fines and branches in one Odoo system.</p><div class="chips"><b>Odoo</b><b>Python</b><b>XML</b></div></article>
-</div></div></section>
+        <section id="projects" style="padding-top:0">
+            <div class="w">
+                <h2 data-rv>Things I've built.</h2>
+                <div class="grid">
+                    <article class="card big" data-rv data-tilt><span class="st">Completed</span>
+                        <h3><a href="https://github.com/Yarayasser-tech/Coffee" target="_blank"
+                                rel="noopener noreferrer">Coffee Shop app</a></h3>
+                        <p>A cross-platform ordering app built around a simple, enjoyable shopping flow. Browse
+                            products, manage the cart, place and track orders, and edit your profile.</p>
+                        <div class="chips"><b>Flutter</b><b>Dart</b><b>Provider</b><b>Google Nav Bar</b></div>
+                    </article>
+                    <article class="card" data-rv data-tilt style="--i:1"><span class="st">Completed</span>
+                        <h3><a href="https://github.com/Yarayasser-tech/Birdle" target="_blank"
+                                rel="noopener noreferrer">Birdle</a></h3>
+                        <p>A Wordle-inspired game with reusable widgets, custom gameplay logic and tests.</p>
+                        <div class="chips"><b>Flutter</b><b>Flutter Test</b></div>
+                    </article>
+                    <article class="card" data-rv data-tilt><span class="st wip">In progress</span>
+                        <h3><a href="https://github.com/Yarayasser-tech/Grocify" target="_blank"
+                                rel="noopener noreferrer">Grocify</a></h3>
+                        <p>A grocery shopping app focused on product browsing, navigation and a clean shopping
+                            experience.</p>
+                        <div class="chips"><b>React Native</b><b>Expo</b><b>TypeScript</b></div>
+                    </article>
+                    <article class="card" data-rv data-tilt style="--i:1"><span class="st">Completed</span>
+                        <h3><a href="https://github.com/Yarayasser-tech/basketball_score_counter" target="_blank"
+                                rel="noopener noreferrer">Basketball Score Counter</a></h3>
+                        <p>Track two teams and add one, two or three points from an interactive UI.</p>
+                        <div class="chips"><b>Flutter</b><b>StatefulWidget</b></div>
+                    </article>
+                    <article class="card" data-rv data-tilt style="--i:2"><span class="st">Completed</span>
+                        <h3><a href="https://github.com/Yarayasser-tech/Facebook" target="_blank"
+                                rel="noopener noreferrer">Facebook UI clone</a></h3>
+                        <p>Practice in responsive layouts, scrolling, navigation and reusable widgets.</p>
+                        <div class="chips"><b>Flutter</b><b>Responsive UI</b></div>
+                    </article>
+                    <article class="card" data-rv data-tilt><span class="st wip">Concept</span>
+                        <h3><a href="https://github.com/Yarayasser-tech/Tradentia" target="_blank"
+                                rel="noopener noreferrer">Tradentia</a></h3>
+                        <p>A community app idea for trading items peer to peer, exploring how to make exchanges easier.
+                        </p>
+                        <div class="chips"><b>Flutter</b><b>UI/UX</b></div>
+                    </article>
+                    <article class="card" data-rv data-tilt style="--i:1"><span class="st">Completed</span>
+                        <h3><a href="https://github.com/Yarayasser-tech/new_sales" target="_blank"
+                                rel="noopener noreferrer">New Sales</a></h3>
+                        <p>An Odoo sales module with a read-only Sales Price column and a bulk price wizard.</p>
+                        <div class="chips"><b>Odoo</b><b>Python</b><b>XML</b></div>
+                    </article>
+                    <article class="card" data-rv data-tilt style="--i:2"><span class="st wip">In progress</span>
+                        <h3><a href="https://github.com/Yarayasser-tech/library_management" target="_blank"
+                                rel="noopener noreferrer">Library Management System</a></h3>
+                        <p>Books, members, borrowing, returns, reservations, fines and branches in one Odoo system.</p>
+                        <div class="chips"><b>Odoo</b><b>Python</b><b>XML</b></div>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-<section id="journey" style="padding-top:0"><div class="w">
-<h2 data-rv>Education and experience.</h2>
-<div class="tl" id="tl">
-<div class="it" data-rv><time>2024 to 2028</time><h3>B.Sc. Business Information Systems</h3><p>Canadian International College</p></div>
-<div class="it" data-rv><time>2026</time><h3>Cross-Platform Mobile Development, Round 5</h3><p>National Telecommunication Institute, Digital Egypt Pioneers Initiative</p></div>
-<div class="it" data-rv><time>2026</time><h3>Flutter and Dart Masterclass</h3><p>Teamz Lab</p></div>
-<div class="it" data-rv><time>2026</time><h3>How to Develop a Basic Mobile App in Flutter</h3><p>Politecnico di Milano</p></div>
-<div class="it" data-rv><time>Experience</time><h3>HR Head, Enactus</h3><p>Team coordination, communication and people management.</p></div>
-</div></div></section>
+        <section id="journey" style="padding-top:0">
+            <div class="w">
+                <h2 data-rv>Education and experience.</h2>
+                <div class="tl" id="tl">
+                    <div class="it" data-rv><time>2024 to 2028</time>
+                        <h3>B.Sc. Business Information Systems</h3>
+                        <p>Canadian International College</p>
+                    </div>
+                    <div class="it" data-rv><time>2026</time>
+                        <h3>Cross-Platform Mobile Development, Round 5</h3>
+                        <p>National Telecommunication Institute, Digital Egypt Pioneers Initiative</p>
+                    </div>
+                    <div class="it" data-rv><time>2026</time>
+                        <h3>Flutter and Dart Masterclass</h3>
+                        <p>Teamz Lab</p>
+                    </div>
+                    <div class="it" data-rv><time>2026</time>
+                        <h3>How to Develop a Basic Mobile App in Flutter</h3>
+                        <p>Politecnico di Milano</p>
+                    </div>
+                    <div class="it" data-rv><time>Experience</time>
+                        <h3>HR Head, Enactus</h3>
+                        <p>Team coordination, communication and people management.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<section id="contact" class="contact"><div class="w">
-<h2>Have an idea? Let's build it.</h2>
-<p>I'm looking for junior Flutter roles, freelance projects, and ideas worth turning into real products.</p>
-<a class="mail" href="mailto:yarayassershaaban@gmail.com">yarayassershaaban@gmail.com</a>
-<div class="links"><a href="https://github.com/Yarayasser-tech" target="_blank" rel="noopener noreferrer">GitHub: Yarayasser-tech</a><a href="https://linkedin.com/in/yara-shaaban-b48b09202/" target="_blank" rel="noopener noreferrer">LinkedIn: Yara Yasser</a><a href="tel:01501171176">01501171176</a></div>
-</div></section>
-</main>
-<footer>© 2026 Yara Yasser</footer>
+        <section id="contact" class="contact">
+            <div class="w">
+                <h2>Have an idea? Let's build it.</h2>
+                <p>I'm looking for junior Flutter roles, freelance projects, and ideas worth turning into real products.
+                </p>
+                <a class="mail" href="mailto:yarayassershaaban@gmail.com">yarayassershaaban@gmail.com</a>
+                <div class="links"><a href="https://github.com/Yarayasser-tech" target="_blank"
+                        rel="noopener noreferrer">GitHub: Yarayasser-tech</a><a
+                        href="https://linkedin.com/in/yara-shaaban-b48b09202/" target="_blank"
+                        rel="noopener noreferrer">LinkedIn: Yara Yasser</a><a href="tel:01501171176">01501171176</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>© 2026 Yara Yasser</footer>
 
-<script>
-const $=s=>document.querySelectorAll(s),R=document.documentElement,rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
-let px=-999,py=-999;
-document.getElementById('mode').onclick=()=>{R.dataset.theme=R.dataset.theme==='dark'?'light':'dark'};
-addEventListener('pointermove',e=>{px=e.clientX;py=e.clientY;R.style.setProperty('--mx',px+'px');R.style.setProperty('--my',py+'px')});
-/* kinetic name */
-let n=0;const L=[];
-$('.ln').forEach(el=>{[...el.dataset.t].forEach(ch=>{const s=document.createElement('span');s.className='l';s.style.setProperty('--i',n++);s.setAttribute('aria-hidden','true');s.textContent=ch;el.appendChild(s);L.push(s)})});
-if(!rm)(function f(t){L.forEach((s,i)=>{const r=s.getBoundingClientRect(),d=Math.hypot(px-(r.left+r.width/2),py-(r.top+r.height/2)),w=520+170*Math.sin(t/650-i*.7)+Math.max(0,1-d/240)*260;s.style.fontWeight=Math.max(200,Math.min(800,w|0))});requestAnimationFrame(f)})(0);
-/* reveal */
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
-$('[data-rv]').forEach(e=>io.observe(e));
-/* tilt cards */
-if(!rm)$('[data-tilt]').forEach(c=>{c.onpointermove=e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;c.style.setProperty('--px',x*100+'%');c.style.setProperty('--py',y*100+'%');c.style.transform=`rotateX(${(.5-y)*8}deg) rotateY(${(x-.5)*8}deg)`};c.onpointerleave=()=>c.style.transform=''});
-/* magnetic buttons */
-if(!rm)$('[data-mag]').forEach(b=>{b.onpointermove=e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.2}px,${(e.clientY-r.top-r.height/2)*.3}px)`};b.onpointerleave=()=>b.style.transform=''});
-/* scroll-driven: statement words + timeline line */
-const st=document.getElementById('stmt'),tl=document.getElementById('tl');
-const words=st.textContent.split(' ');st.innerHTML=words.map(w=>`<span class="wd">${w}</span>`).join(' ');
-const W=[...st.children];
-function sc(){const h=innerHeight,r=st.getBoundingClientRect(),p=Math.min(1,Math.max(0,(h*.9-r.top)/(h*.55)));W.forEach((w,i)=>w.classList.toggle('on',rm||i<p*W.length+.5));
-const t=tl.getBoundingClientRect();tl.style.setProperty('--p',rm?1:Math.min(1,Math.max(0,(h*.7-t.top)/t.height)))}
-addEventListener('scroll',sc,{passive:true});addEventListener('resize',sc);sc();
-</script>
+    <script>
+        const $ = s => document.querySelectorAll(s), R = document.documentElement, rm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+        let px = -999, py = -999;
+        document.getElementById('mode').onclick = () => { R.dataset.theme = R.dataset.theme === 'dark' ? 'light' : 'dark' };
+        addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; R.style.setProperty('--mx', px + 'px'); R.style.setProperty('--my', py + 'px') });
+        /* kinetic name */
+        let n = 0; const L = [];
+        $('.ln').forEach(el => { [...el.dataset.t].forEach(ch => { const s = document.createElement('span'); s.className = 'l'; s.style.setProperty('--i', n++); s.setAttribute('aria-hidden', 'true'); s.textContent = ch; el.appendChild(s); L.push(s) }) });
+        if (!rm) (function f(t) { L.forEach((s, i) => { const r = s.getBoundingClientRect(), d = Math.hypot(px - (r.left + r.width / 2), py - (r.top + r.height / 2)), w = 520 + 170 * Math.sin(t / 650 - i * .7) + Math.max(0, 1 - d / 240) * 260; s.style.fontWeight = Math.max(200, Math.min(800, w | 0)) }); requestAnimationFrame(f) })(0);
+        /* reveal */
+        const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: .15 });
+        $('[data-rv]').forEach(e => io.observe(e));
+        /* tilt cards */
+        if (!rm) $('[data-tilt]').forEach(c => { c.onpointermove = e => { const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height; c.style.setProperty('--px', x * 100 + '%'); c.style.setProperty('--py', y * 100 + '%'); c.style.transform = `rotateX(${(.5 - y) * 8}deg) rotateY(${(x - .5) * 8}deg)` }; c.onpointerleave = () => c.style.transform = '' });
+        /* magnetic buttons */
+        if (!rm) $('[data-mag]').forEach(b => { b.onpointermove = e => { const r = b.getBoundingClientRect(); b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .2}px,${(e.clientY - r.top - r.height / 2) * .3}px)` }; b.onpointerleave = () => b.style.transform = '' });
+        /* scroll-driven: statement words + timeline line */
+        const st = document.getElementById('stmt'), tl = document.getElementById('tl');
+        const words = st.textContent.split(' '); st.innerHTML = words.map(w => `<span class="wd">${w}</span>`).join(' ');
+        const W = [...st.children];
+        function sc() {
+            const h = innerHeight, r = st.getBoundingClientRect(), p = Math.min(1, Math.max(0, (h * .9 - r.top) / (h * .55))); W.forEach((w, i) => w.classList.toggle('on', rm || i < p * W.length + .5));
+            const t = tl.getBoundingClientRect(); tl.style.setProperty('--p', rm ? 1 : Math.min(1, Math.max(0, (h * .7 - t.top) / t.height)))
+        }
+        addEventListener('scroll', sc, { passive: true }); addEventListener('resize', sc); sc();
+    </script>
 </body>
+
 </html>
